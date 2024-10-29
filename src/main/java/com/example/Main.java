@@ -15,14 +15,25 @@ public class Main {
         System.out.println("Ingrese la contraseña: ");
         String passwordinput = input.nextLine();
 
-        if (usernameinput.equals(username) && passwordinput.equals(password)) {
-            System.out.println("Inicio de sesion exitoso");
+        boolean correcto = false;
+        while (correcto == false) {
 
-        } else {
-            System.out.println("Error de inicio de sesion,Vuelve a intentarlo.");
+            if (usernameinput.equals(username) && passwordinput.equals(password)) {
+                System.out.println("Inicio de sesion exitoso");
+                correcto = true;
+
+            } else {
+                System.out.println("Error de inicio de sesion,Vuelve a intentarlo.");
+                System.out.println("Ingrese usuario:");
+                usernameinput = input.nextLine();
+                System.out.println("Ingrese contraseña: ");
+                passwordinput = input.nextLine();
+            }
+
         }
-
         input.close();
-
     }
+
+    
+
 }
