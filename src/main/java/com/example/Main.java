@@ -13,7 +13,7 @@ public class Main {
     private List<List<Double>> preciosPorCategorias;
 
     public Main() {
-
+        // Arraylist = Almacenamientos
         categorias = new ArrayList<>();
         input = new Scanner(System.in);
         productosPorCategorias = new ArrayList<>();
@@ -28,7 +28,7 @@ public class Main {
         main.iniciarSesion();
 
     }
-
+// Metodo = Inicio de sesion
     private void iniciarSesion() {
 
         String username = "Admin";
@@ -290,8 +290,7 @@ public class Main {
             String productoEliminado = productosPorCategorias.get(categoriaIndex).remove(indice);
             cantidadesPorCategorias.get(categoriaIndex).remove(indice);
             preciosPorCategorias.get(categoriaIndex).remove(indice);
-            
-            
+
             System.out.println("Producto eliminado con exito: " + productoEliminado);
 
         } else {
@@ -309,7 +308,8 @@ public class Main {
         List<Double> precios = preciosPorCategorias.get(categoriaIndex);
 
         for (int i = 0; i < productos.size(); i++) {
-            System.out.println((i + 1) + ". " + productos.get(i) + " - cantidad: " + cantidades.get(i) + " - precio: " + precios.get(i) );
+            System.out.println((i + 1) + ". " + productos.get(i) + " - cantidad: " + cantidades.get(i) + " - precio: "
+                    + precios.get(i));
         }
         if (productos.isEmpty()) {
             System.out.println("No hay productos disponibles en esta categoria");
