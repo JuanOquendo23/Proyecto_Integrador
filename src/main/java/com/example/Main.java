@@ -12,14 +12,12 @@ public class Main {
     private static List<List<Integer>> cantidadesPorCategorias = new ArrayList<>();
     private static List<List<Double>> preciosPorCategorias = new ArrayList<>();
 
-
     public static void main(String[] args) {
-        
+        System.out.println("Bienvenido a el sistema de inventario | Invexus");
+        iniciarSesion();
+    }
 
-     iniciarSesion();
-}
-
-// Metodo = Inicio de sesion
+    // Metodo = Inicio de sesion
     private static void iniciarSesion() {
 
         String username = "Admin";
@@ -35,7 +33,7 @@ public class Main {
 
             if (usernameinput.equals(username) && passwordinput.equals(password)) {
                 System.out.println("Inicio de sesion exitoso");
-               break;
+                break;
 
             } else {
                 System.out.println("Error de inicio de sesion,Vuelve a intentarlo.");
@@ -44,15 +42,13 @@ public class Main {
                 System.out.println("Ingrese contraseña: ");
                 passwordinput = input.nextLine();
             }
-      
-      
+
         }
         mostrarMenu();
     }
 
-
     // Menu de categorias
-    public  static void mostrarMenu() {
+    public static void mostrarMenu() {
         int opcion;
 
         do {
@@ -146,18 +142,29 @@ public class Main {
     // Opciones de categorias = Metodos
 
     private static void seleccionarCategoria() {
-        listarCategoria();
-        System.out.println("Seleccione el numero de la categoria: ");
-        int indice = input.nextInt() - 1;
-        input.nextLine();
 
-        if (indice >= 0 && indice < categorias.size()) {
-            System.out.println("Has seleccionado la categoria: " + categorias.get(indice));
-            gestionarProductos(indice);
-
-        } else {
-            System.out.println("Indice invalido, vuelve a intentarlo.");
+        if (categorias.isEmpty()) {
+            System.out.println("No hay categorias disponibles.");
+            return;
         }
+
+        listarCategoria();
+        while (true) {
+
+            System.out.println("Seleccione el numero de la categoria: ");
+            int indice = input.nextInt() - 1;
+            input.nextLine();
+
+            if (indice >= 0 && indice < categorias.size()) {
+                System.out.println("Has seleccionado la categoria: " + categorias.get(indice));
+                gestionarProductos(indice);
+                break;
+
+            } else {
+                System.out.println("Indice invalido, vuelve a intentarlo.");
+            }
+        }
+
     }
 
     private static void agregarCategoria() {
@@ -172,6 +179,11 @@ public class Main {
     }
 
     private static void editarCategoria() {
+        if (categorias.isEmpty()) {
+            System.out.println("No hay categorias para editar");
+            return;
+        }
+
         listarCategoria();
         System.out.println("Seleccione el numero de la categoria a editar: ");
         int indice = input.nextInt() - 1;
@@ -190,6 +202,12 @@ public class Main {
     }
 
     private static void eliminarCategoria() {
+
+        if (categorias.isEmpty()) {
+            System.out.println("No hay categorias disponibles para eliminar");
+            return;
+        }
+
         listarCategoria();
         System.out.println("Seleccione el numero de la categoria a eliminar: ");
         int indice = input.nextInt() - 1;
@@ -208,7 +226,7 @@ public class Main {
 
     }
 
-    private  static void listarCategoria() {
+    private static void listarCategoria() {
         System.out.println("--- Lista De Categorias ---");
         for (int i = 0; i < categorias.size(); i++) {
             System.out.println((i + 1) + ". " + categorias.get(i));
@@ -221,7 +239,7 @@ public class Main {
     }
     // Opciones de productos = metodos
 
-    private  static void agregarProducto(int categoriaIndex) {
+    private static void agregarProducto(int categoriaIndex) {
         System.out.println("Ingrese el nombre del nuevo producto");
         String productoNombre = input.nextLine();
 
@@ -243,6 +261,12 @@ public class Main {
     }
 
     private static void editarProducto(int categoriaIndex) {
+        if (productosPorCategorias.get(categoriaIndex).isEmpty()) {
+            System.out.println("No hay productos disponibles para editar en esta categoria");
+            return;
+
+        }
+
         listarProductos(categoriaIndex);
         System.out.println("Seleccion el numero del producto a editar: ");
         int indice = input.nextInt() - 1;
@@ -274,6 +298,12 @@ public class Main {
     }
 
     private static void eliminarProducto(int categoriaIndex) {
+        if (preciosPorCategorias.get(categoriaIndex).isEmpty()) {
+            System.out.println("No hay productos para eliminar en esta categoria");
+            return;
+
+        }
+
         listarProductos(categoriaIndex);
         System.out.println("Seleccione el numero del producto a eliminar: ");
         int indice = input.nextInt() - 1;
