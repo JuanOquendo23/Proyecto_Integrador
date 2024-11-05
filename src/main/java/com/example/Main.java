@@ -40,13 +40,12 @@ public class Main {
         System.out.println("Ingrese la contraseña: ");
         String passwordinput = input.nextLine();
 
-        boolean correcto = false;
-        while (correcto == false) {
+        while (true) {
 
             if (usernameinput.equals(username) && passwordinput.equals(password)) {
                 System.out.println("Inicio de sesion exitoso");
-                correcto = true;
-                mostrarMenu();
+                // correcto = true;
+             
                 break;
 
             } else {
@@ -56,8 +55,12 @@ public class Main {
                 System.out.println("Ingrese contraseña: ");
                 passwordinput = input.nextLine();
             }
+      
+      
         }
+        mostrarMenu();
     }
+
 
     // Menu de categorias
     public void mostrarMenu() {
