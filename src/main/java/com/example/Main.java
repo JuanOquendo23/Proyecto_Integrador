@@ -11,6 +11,7 @@ public class Main {
     private static List<List<String>> productosPorCategorias = new ArrayList<>();
     private static List<List<Integer>> cantidadesPorCategorias = new ArrayList<>();
     private static List<List<Double>> preciosPorCategorias = new ArrayList<>();
+    private static List<String> movimientos = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("Bienvenido a el sistema de inventario | Invexus");
@@ -85,6 +86,7 @@ public class Main {
                 case 5:
                     seleccionarCategoria();
                     break;
+
                 case 6:
                     System.out.println("Saliendo..");
                     break;
@@ -106,7 +108,11 @@ public class Main {
             System.out.println("2. Editar producto");
             System.out.println("3. Eliminar producto");
             System.out.println("4. Listar  productos");
-            System.out.println("5. Volver a el menu de categorias");
+            System.out.println("5. Sumar unidades a un producto");
+            System.out.println("6. Restar unidades a un producto");
+            System.out.println("7. Ver historial de movimientos ");
+            System.out.println("8. MostrarPDF");
+            System.out.println("9. Volver a el menu de categorias");
             System.out.println("Seleccione una opcion: ");
 
             opcion = input.nextInt();
@@ -127,6 +133,21 @@ public class Main {
                     listarProductos(categoriaIndex);
                     break;
                 case 5:
+                    sumarUnidadesProducto(categoriaIndex);
+                    break;
+
+                case 6:
+                    restarUnidadesProducto(categoriaIndex);
+                    break;
+
+                case 7:
+                    verMovimientos();
+                    break;
+                case 8:
+                    mostrarPDF();
+                    break;
+
+                case 9:
                     System.out.println("Volviendo al menu de categorias...");
                     break;
 
@@ -135,7 +156,7 @@ public class Main {
 
             }
 
-        } while (opcion != 5);
+        } while (opcion != 9);
 
     }
 
@@ -251,11 +272,20 @@ public class Main {
 
         input.nextLine();
 
+        System.out.println("Ingrese la fecha (dd/mm/yyyy): ");
+        String fecha = input.nextLine();
+
+        System.out.println("Ingresa una observacion: ");
+        String observacion = input.nextLine();
+
         preciosPorCategorias.get(categoriaIndex).add(precio);
 
         productosPorCategorias.get(categoriaIndex).add(productoNombre);
 
         cantidadesPorCategorias.get(categoriaIndex).add(cantidad);
+
+        movimientos.add("Agregar producto: " + productoNombre + " - Cantidad: " + cantidad + " - Fecha: " + fecha
+                + " - Observacion: " + observacion);
 
         System.out.println("Producto agregado: " + productoNombre);
     }
@@ -313,6 +343,17 @@ public class Main {
             cantidadesPorCategorias.get(categoriaIndex).remove(indice);
             preciosPorCategorias.get(categoriaIndex).remove(indice);
 
+            input.nextLine();
+
+            System.out.println("Ingrese la fecha (dd/mm/yyyy): ");
+            String fecha = input.nextLine();
+
+            System.out.println("Ingrese una observacion: ");
+            String observacion = input.nextLine();
+
+            movimientos.add("Eliminar producto: " + productoEliminado + " - Fecha: " + fecha + " - Observacion: "
+                    + observacion);
+
             System.out.println("Producto eliminado con exito: " + productoEliminado);
 
         } else {
@@ -337,5 +378,144 @@ public class Main {
             System.out.println("No hay productos disponibles en esta categoria");
 
         }
+
+    }
+
+    // Añadir y restar unidades, metodo para ver movimientos y por ultimo generar
+    // pdf (control de salida)
+
+    private static void sumarUnidadesProducto(int categoriaIndex) {
+        if (productosPorCategorias.get(categoriaIndex).isEmpty()) {
+            System.out.println("No hay productos disponibles para sumar en esta categoria");
+            return;
+
+        }
+
+        listarProductos(categoriaIndex);
+        System.out.println("Seleccione el numero del producto al que desea agregar unidades: ");
+        int indice = input.nextInt() - 1;
+        input.nextLine();
+
+        if (indice >= 0 && indice < productosPorCategorias.get(categoriaIndex).size()) {
+            System.out.println("Ingrese la cantidad de unidades a agregar: ");
+            int cantidad = input.nextInt();
+            input.nextLine();
+
+            int nuevaCantidad = cantidadesPorCategorias.get(categoriaIndex).get(indice) + cantidad;
+            cantidadesPorCategorias.get(categoriaIndex).set(indice, nuevaCantidad);
+
+            System.out.println("Ingrese la fecha (dd/mm/yyyy): ");
+            String fecha = input.nextLine();
+
+            System.out.println("Ingrese la observacion: ");
+            String observacion = input.nextLine();
+
+            movimientos.add("Sumar unidades: " + cantidad + " al producto: "
+                    + productosPorCategorias.get(categoriaIndex).get(indice) + " - Nueva cantidad: " + nuevaCantidad
+                    + " - Fecha: " + fecha + " - Observacion: " + observacion);
+
+            System.out.println("Unidades agregadas exitosamente. Nueva cantidad: " + nuevaCantidad);
+
+        } else {
+            System.out.println("Indice invalido, vuelve a intentarlo");
+        }
+
+    }
+
+    private static void restarUnidadesProducto(int categoriaIndex) {
+
+        if (productosPorCategorias.get(categoriaIndex).isEmpty()) {
+            System.out.println("No hay productos disponibles para restar en esta categorias");
+            return;
+
+        }
+
+        listarProductos(categoriaIndex);
+        System.out.println("Seleccione el numero del producto que desea restar unidades: ");
+        int indice = input.nextInt() - 1;
+        input.nextLine();
+
+        if (indice >= 0 && indice < productosPorCategorias.get(categoriaIndex).size()) {
+
+            System.out.println("Ingrese la cantidad de unidades a restar: ");
+            int cantidad = input.nextInt();
+            input.nextLine();
+
+            int cantidadActual = cantidadesPorCategorias.get(categoriaIndex).get(indice);
+
+            int nuevaCantidad = cantidadActual - cantidad;
+
+            if (nuevaCantidad < 0) {
+                System.out.println("No se puede reducir por debajo de cero. cantidad actual: " + cantidadActual);
+                return;
+
+            }
+
+            cantidadesPorCategorias.get(categoriaIndex).set(indice, nuevaCantidad);
+
+            System.out.println("Ingrese la fecha (dd/mm/yyyy): ");
+            String fecha = input.nextLine();
+
+            System.out.println("Ingrese una observacion: ");
+            String observacion = input.nextLine();
+
+            movimientos.add("Restar unidades: " + cantidad + " al producto: "
+                    + productosPorCategorias.get(categoriaIndex).get(indice) + " - Nueva cantidad: " + nuevaCantidad
+                    + " - Fecha: " + fecha + " - Observacion: " + observacion);
+
+            if (nuevaCantidad < 10) {
+                System.out.println("Alerta: stock bajo. quedan menos de 10 unidades.");
+
+            }
+
+            System.out.println("unidades restadas exixtosamente. Nueva cantidad: " + nuevaCantidad);
+
+        } else {
+            System.out.println("Indice invalido, vuelve a intentarlo");
+        }
+
+    }
+
+    private static void verMovimientos() {
+        System.out.println("-------- Historial de movimientos --------");
+
+        if (movimientos.isEmpty()) {
+            System.out.println("No hay movimientos registrados.");
+
+        } else {
+            for (String movimiento : movimientos) {
+                System.out.println(movimiento);
+            }
+        }
+    }
+
+    // mostrar pdf
+    private static void mostrarPDF() {
+
+        System.out.println("Ingrese la fecha del pdf (cualquier formato es valido): ");
+        String fechaInput = input.nextLine();
+
+        System.out.println("============================================");
+        System.out.println("        HISTORIAL DE MOVIMIENTOS        ");
+        System.out.println("============================================");
+        System.out.println("Fecha de generacion: " + fechaInput);
+        System.out.println("-----------------------------------------------");
+
+        if (movimientos.isEmpty()) {
+            System.out.println("No hay movimientos registrados.");
+
+        } else {
+            // enumeracion de los movimientos en el pdf
+            for (int i = 0; i < movimientos.size(); i++) {
+                System.out.println((i + 1) + "." + movimientos.get(i));
+                System.out.println("-----------------------------------------------");
+            }
+
+        }
+
+        System.out.println("============================================");
+        System.out.println("        Fin Del Historial De Movimientos        ");
+        System.out.println("============================================");
+
     }
 }
