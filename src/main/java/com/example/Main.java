@@ -14,7 +14,11 @@ public class Main {
     private static List<String> movimientos = new ArrayList<>();
 
     public static void main(String[] args) {
+        System.out.println("");
+        System.out.println("");
         System.out.println("Bienvenido a el sistema de inventario | Invexus");
+        System.out.println("");
+
         iniciarSesion();
     }
 
@@ -53,14 +57,16 @@ public class Main {
         int opcion;
 
         do {
+            System.out.println("");
             System.out.println("--------- Menu De Categorias ---------");
+            System.out.println("");
             System.out.println("1. Agregar categorias");
             System.out.println("2. Editar categoria");
             System.out.println("3. Eliminar categoria");
             System.out.println("4. Listar Categorias");
             System.out.println("5. Seleccionar categoria");
             System.out.println("6. Salir del sistema");
-
+            System.out.println("");
             System.out.println("Seleccione una opcion: ");
 
             opcion = input.nextInt();
@@ -102,7 +108,9 @@ public class Main {
     private static void gestionarProductos(int categoriaIndex) {
         int opcion;
         do {
+            System.out.println("");
             System.out.println("--------- Menu De Productos Para " + categorias.get(categoriaIndex) + "---------");
+            System.out.println("");
 
             System.out.println("1. Agregar producto");
             System.out.println("2. Editar producto");
@@ -113,6 +121,7 @@ public class Main {
             System.out.println("7. Ver historial de movimientos ");
             System.out.println("8. MostrarPDF");
             System.out.println("9. Volver a el menu de categorias");
+            System.out.println("");
             System.out.println("Seleccione una opcion: ");
 
             opcion = input.nextInt();
@@ -135,25 +144,20 @@ public class Main {
                 case 5:
                     sumarUnidadesProducto(categoriaIndex);
                     break;
-
                 case 6:
                     restarUnidadesProducto(categoriaIndex);
                     break;
-
                 case 7:
                     verMovimientos();
                     break;
                 case 8:
                     mostrarPDF();
                     break;
-
                 case 9:
                     System.out.println("Volviendo al menu de categorias...");
                     break;
-
                 default:
                     System.out.println("Opcion invalida, por favor seleccione nuevamente");
-
             }
 
         } while (opcion != 9);
@@ -248,10 +252,13 @@ public class Main {
     }
 
     private static void listarCategoria() {
+        System.out.println("");
         System.out.println("--- Lista De Categorias ---");
+        System.out.println("");
         for (int i = 0; i < categorias.size(); i++) {
-            System.out.println((i + 1) + ". " + categorias.get(i));
+            System.out.println("\t" + (i + 1) + ". " + categorias.get(i));
         }
+        System.out.println("");
         if (categorias.isEmpty()) {
             System.out.println("No hay categorias disponibles.");
 
@@ -362,7 +369,9 @@ public class Main {
     }
 
     private static void listarProductos(int categoriaIndex) {
+        System.out.println("");
         System.out.println("--- Lista De Productos En " + categorias.get(categoriaIndex) + " ---");
+        System.out.println("");
 
         List<String> productos = productosPorCategorias.get(categoriaIndex);
 
@@ -371,9 +380,11 @@ public class Main {
         List<Double> precios = preciosPorCategorias.get(categoriaIndex);
 
         for (int i = 0; i < productos.size(); i++) {
-            System.out.println((i + 1) + ". " + productos.get(i) + " - cantidad: " + cantidades.get(i) + " - precio: "
-                    + precios.get(i));
+            System.out.println(
+                    "\t" + (i + 1) + ". " + productos.get(i) + " - cantidad: " + cantidades.get(i) + " - precio: "
+                            + precios.get(i));
         }
+        System.out.println("");
         if (productos.isEmpty()) {
             System.out.println("No hay productos disponibles en esta categoria");
 
@@ -477,7 +488,9 @@ public class Main {
     }
 
     private static void verMovimientos() {
+        System.out.println("");
         System.out.println("-------- Historial de movimientos --------");
+        System.out.println("");
 
         if (movimientos.isEmpty()) {
             System.out.println("No hay movimientos registrados.");
@@ -496,7 +509,7 @@ public class Main {
         String fechaInput = input.nextLine();
 
         System.out.println("============================================");
-        System.out.println("        HISTORIAL DE MOVIMIENTOS        ");
+        System.out.println("          HISTORIAL DE MOVIMIENTOS          ");
         System.out.println("============================================");
         System.out.println("Fecha de generacion: " + fechaInput);
         System.out.println("-----------------------------------------------");
@@ -514,8 +527,34 @@ public class Main {
         }
 
         System.out.println("============================================");
-        System.out.println("        Fin Del Historial De Movimientos        ");
+        System.out.println("        Fin Del Historial De Movimientos    ");
         System.out.println("============================================");
+        System.out.println("");
+        mostrarProductosBajoStock();
 
     }
+
+    private static void mostrarProductosBajoStock() {
+        System.out.println("==========================================");
+        System.out.println("    Productos con menos de 10 unidades    ");
+        System.out.println("==========================================");
+
+        for (int i = 0; i < categorias.size(); i++) { // Recorre cada categoría
+            String categoria = categorias.get(i);
+            List<String> productos = productosPorCategorias.get(i);
+            List<Integer> cantidades = cantidadesPorCategorias.get(i);
+
+            for (int j = 0; j < productos.size(); j++) { // Recorre cada producto en la categoría
+                int cantidad = cantidades.get(j);
+
+                if (cantidad < 10) { // Filtra productos con cantidad menor a 10
+                    System.out.println("Categoría: " + categoria +
+                            ", Producto: " + productos.get(j) +
+                            ", Cantidad: " + cantidad);
+                    System.out.println("----------------------------------------------");
+                }
+            }
+        }
+    }
+
 }
