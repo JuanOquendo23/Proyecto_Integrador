@@ -118,9 +118,10 @@ public class Main {
             System.out.println("4. Listar  productos");
             System.out.println("5. Sumar unidades a un producto");
             System.out.println("6. Restar unidades a un producto");
-            System.out.println("7. Ver historial de movimientos ");
-            System.out.println("8. MostrarPDF");
-            System.out.println("9. Volver a el menu de categorias");
+            System.out.println("7. Cambiar precio a algun producto");
+            System.out.println("8. Ver historial de movimientos ");
+            System.out.println("9. MostrarPDF");
+            System.out.println("10. Volver a el menu de categorias");
             System.out.println("");
             System.out.println("Seleccione una opcion: ");
 
@@ -148,19 +149,23 @@ public class Main {
                     restarUnidadesProducto(categoriaIndex);
                     break;
                 case 7:
-                    verMovimientos();
+                    cambiarPrecioProducto(categoriaIndex);
                     break;
                 case 8:
-                    mostrarPDF();
+                    verMovimientos();
                     break;
                 case 9:
+                    mostrarPDF();
+                    break;
+
+                case 10:
                     System.out.println("Volviendo al menu de categorias...");
                     break;
                 default:
                     System.out.println("Opcion invalida, por favor seleccione nuevamente");
             }
 
-        } while (opcion != 9);
+        } while (opcion != 10);
 
     }
 
@@ -553,8 +558,49 @@ public class Main {
                             ", Cantidad: " + cantidad);
                     System.out.println("----------------------------------------------");
                 }
+
             }
+
         }
+    }
+
+    // Agregamos un metodo que se pueda cambiar precio
+    private static void cambiarPrecioProducto(int categoriaIndex) {
+        if (productosPorCategorias.get(categoriaIndex).isEmpty()) {
+            System.out.println("No hay productos disponibles para cambiar el precio");
+            return;
+            
+        }
+
+        listarProductos(categoriaIndex);
+        System.out.println("Seleccione el numero del producto cuyo precio desea cambiar: ");
+        int indice = input.nextInt() -1;
+        input.nextLine();
+
+        if (indice >= 0 && indice < productosPorCategorias.get(categoriaIndex).size()) {
+
+
+            System.out.println("Ingrese el nuevo precio: ");
+            double nuevoPrecio = input.nextDouble();
+            input.nextLine();
+
+            double precioAnterior = preciosPorCategorias.get(categoriaIndex).get(indice);
+            preciosPorCategorias.get(categoriaIndex).set(indice, nuevoPrecio);
+
+            System.out.println("Precio actualizado de " + productosPorCategorias.get(categoriaIndex).get(indice) + precioAnterior + " a " + nuevoPrecio);
+
+            System.out.println("Ingrese la fecha (dd/mm/yyyy): ");
+            String fecha = input.nextLine();
+
+            System.out.println("Ingrese una observacion: ");
+            String observacion = input.nextLine();
+
+            movimientos.add("Cambios de precio: " + productosPorCategorias.get(categoriaIndex).get(indice) + " - Precio anterior: " +  precioAnterior + " - Nuevo precio: " + nuevoPrecio + " - Fecha: " + fecha + " - Observacion: " + observacion);
+            
+        } else {
+            System.out.println("Indice invalido, vuelve a intentarlo");
+        }
+
     }
 
 }
