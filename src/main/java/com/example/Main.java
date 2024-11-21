@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.List;
 
 public class Main {
-
+    // Arrays y listas
     private static List<String> categorias = new ArrayList<>();
     private static Scanner input = new Scanner(System.in);
     private static List<List<String>> productosPorCategorias = new ArrayList<>();
@@ -103,7 +103,7 @@ public class Main {
         } while (opcion != 6);
     }
 
-    // Gestion de productos
+    // Gestión de productos
 
     private static void gestionarProductos(int categoriaIndex) {
         int opcion;
@@ -169,7 +169,7 @@ public class Main {
 
     }
 
-    // Opciones de categorias = Metodos
+    // Opciones de categorías = Métodos
 
     private static void seleccionarCategoria() {
 
@@ -270,7 +270,7 @@ public class Main {
         }
 
     }
-    // Opciones de productos = metodos
+    // Opciones de productos = métodos
 
     private static void agregarProducto(int categoriaIndex) {
         System.out.println("Ingrese el nombre del nuevo producto");
@@ -507,7 +507,7 @@ public class Main {
         }
     }
 
-    // mostrar pdf
+    // Mostrar PDF
     private static void mostrarPDF() {
 
         System.out.println("Ingrese la fecha del pdf (cualquier formato es valido): ");
@@ -569,16 +569,15 @@ public class Main {
         if (productosPorCategorias.get(categoriaIndex).isEmpty()) {
             System.out.println("No hay productos disponibles para cambiar el precio");
             return;
-            
+
         }
 
         listarProductos(categoriaIndex);
         System.out.println("Seleccione el numero del producto cuyo precio desea cambiar: ");
-        int indice = input.nextInt() -1;
+        int indice = input.nextInt() - 1;
         input.nextLine();
 
         if (indice >= 0 && indice < productosPorCategorias.get(categoriaIndex).size()) {
-
 
             System.out.println("Ingrese el nuevo precio: ");
             double nuevoPrecio = input.nextDouble();
@@ -587,7 +586,8 @@ public class Main {
             double precioAnterior = preciosPorCategorias.get(categoriaIndex).get(indice);
             preciosPorCategorias.get(categoriaIndex).set(indice, nuevoPrecio);
 
-            System.out.println("Precio actualizado de " + productosPorCategorias.get(categoriaIndex).get(indice) + precioAnterior + " a " + nuevoPrecio);
+            System.out.println("Precio actualizado de " + productosPorCategorias.get(categoriaIndex).get(indice)
+                    + precioAnterior + " a " + nuevoPrecio);
 
             System.out.println("Ingrese la fecha (dd/mm/yyyy): ");
             String fecha = input.nextLine();
@@ -595,8 +595,10 @@ public class Main {
             System.out.println("Ingrese una observacion: ");
             String observacion = input.nextLine();
 
-            movimientos.add("Cambios de precio: " + productosPorCategorias.get(categoriaIndex).get(indice) + " - Precio anterior: " +  precioAnterior + " - Nuevo precio: " + nuevoPrecio + " - Fecha: " + fecha + " - Observacion: " + observacion);
-            
+            movimientos.add("Cambios de precio: " + productosPorCategorias.get(categoriaIndex).get(indice)
+                    + " - Precio anterior: " + precioAnterior + " - Nuevo precio: " + nuevoPrecio + " - Fecha: " + fecha
+                    + " - Observacion: " + observacion);
+
         } else {
             System.out.println("Indice invalido, vuelve a intentarlo");
         }
